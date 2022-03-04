@@ -21,9 +21,9 @@ There are 3 types of possible questions:
 ```Json
 {
   "nr": 0,
-  "type": "JANEIN",
+  "type": "BOOL",
   "text": "...",
-  "value": 0
+  "value": true
 }
 ```
 
@@ -33,7 +33,7 @@ There are 3 types of possible questions:
   "nr": 0,
   "type": "TEXT",
   "text": "...",
-  "value": 0
+  "value": "answer"
 }
 ```
 
