@@ -1,0 +1,24 @@
+{
+  "name": "Befragung 1",
+  "seconds": 1000,
+  "fragen": [
+    {
+      "nr": 1,
+      "typ": "BoolFrage",
+      "text": "Ist das ein Bespiel für eine Ja/Nein Frage?"
+    },
+    {
+      "nr": 2,
+      "typ": "TextFrage",
+      "text": "Was ist Ihr Lieblingstier?"
+    },
+    {
+      "nr": 3,
+      "typ": "NumFrage",
+      "text": "Von einer Skala von 1 bis 10, wie würden Sie diese Befragung bewerten?",
+      "minwert": 1,
+      "maxwert": 10
+    }
+  ]
+
+  }
