@@ -5,20 +5,60 @@
     {
       "nr": 1,
       "typ": "BoolFrage",
-      "text": "Ist das ein Bespiel für eine Ja/Nein Frage?"
+      "text": "Sind Sie bereit für die kommenden Fragen?"
     },
     {
       "nr": 2,
       "typ": "TextFrage",
-      "text": "Was ist Ihr Lieblingstier?"
+      "text": "Wie heißen Sie?"
     },
     {
       "nr": 3,
+      "typ": "TextFrage",
+      "text": "Was ist das letzte was Sie gegessen haben?"
+    },
+    {
+      "nr": 4,
       "typ": "NumFrage",
-      "text": "Von einer Skala von 1 bis 10, wie würden Sie diese Befragung bewerten?",
+      "text": "Welche Note würden Sie sich selbst in FSST geben?",
+      "minwert": 1,
+      "maxwert": 5
+    },
+    {
+      "nr": 5,
+      "typ": "NumFrage",
+      "text": "Von einer Skala von 1-10, wie würden Sie Ihre Erfahrung an der HTL Steyr bewerten?",
       "minwert": 1,
       "maxwert": 10
+    },
+    {
+      "nr": 6,
+      "typ": "NumFrage",
+      "text": "Von einer Skala von 1-10, wie würden Sie Herr Professor Wittners Lehrkünste bewerten?",
+      "minwert": 9,
+      "maxwert": 11
+    },
+    {
+      "nr": 7,
+      "typ": "BoolFrage",
+      "text": "Würden Sie sich als Freund der Berge und der Musik bezeichnen?"
+    },
+    {
+      "nr": 8,
+      "typ": "TextFrage",
+      "text": "Was ist Ihre Lieblingsfarbe?"
+    },
+    {
+      "nr": 9,
+      "typ": "BoolFrage",
+      "text": "Würden Sie Scholler Paul als einen talentierten Jungspund bezeichnen?"
+    },
+    {
+      "nr": 10,
+      "typ": "NumFrage",
+      "text": "Mit wie vielen Sterne würden Sie diese Befragung bewerten?",
+      "minwert": 1,
+      "maxwert": 5
     }
   ]
-
-  }
+}
