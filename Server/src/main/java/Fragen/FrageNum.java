@@ -34,4 +34,9 @@ public class FrageNum extends Frage{
     public void addAntwortVal(int val) {
         antwortVal.add(val);
     }
+
+    @Override
+    public void toJson() {
+
+    }
 }

@@ -16,4 +16,9 @@ public class FrageBool extends Frage{
     public void addAntwortBool(boolean v) {
         antwortBool.add(v);
     }
+
+    @Override
+    public void toJson() {
+
+    }
 }

@@ -35,5 +35,7 @@ public abstract class Frage
     public void setText(String text) {
         this.text = text;
     }
+
+    public abstract void toJson();
 }
 

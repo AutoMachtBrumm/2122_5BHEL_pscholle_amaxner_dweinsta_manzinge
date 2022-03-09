@@ -16,4 +16,9 @@ public class FrageText extends Frage{
     public void addAntwortText(String v) {
         antwortText.add(v);
     }
+
+    @Override
+    public void toJson() {
+
+    }
 }

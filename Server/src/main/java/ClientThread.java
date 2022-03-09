@@ -39,7 +39,7 @@ public class ClientThread extends Thread {
 
             for (Frage frage:
                  befragung.getFragen()) {
-                writer.write();
+                writer.write("");
             }
 
             socket.close();
