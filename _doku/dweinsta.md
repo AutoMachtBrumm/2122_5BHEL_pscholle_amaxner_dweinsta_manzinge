@@ -2,6 +2,7 @@
 # WEINSTABEL _ Working progress
 
 08.03.2022
+
 Erstellen der Hauptklassen Befragung, Frage (Abstrakt), FrageBool, FrageNum, FrageText inklusive Konstruktoren, Getter und Setter
 
 Erstellen des TCPSockets, welcher die Clients annimmt
