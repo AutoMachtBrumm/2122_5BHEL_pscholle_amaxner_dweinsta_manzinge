@@ -3,42 +3,71 @@ package client;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Objects;
 
 public class Client {
 
-    private static Socket socket = null;
-    private static OutputStreamWriter output = null;
-    private static InputStreamReader input = null;
+    private Socket socket = null;
+    private BufferedReader reader = null;
+    private BufferedWriter writer = null;
 
-    public static void connectToServer(InetAddress address, int port) throws IOException {
-        socket = new Socket(address, port);
-        output = new OutputStreamWriter(socket.getOutputStream());
-        input = new InputStreamReader(socket.getInputStream());
+    public Client(InetAddress address, int port){
+
+        try {
+            // Creates Socket for Client & Buffers
+            connectToServer(address, port);
+
+            // Send Authentication Key
+            sendDataToServ("Befragung1");
+
+            String jsonString = "";
+
+            // Repeat process until Server send "ENDE"
+            while(jsonString.equals("ENDE")) {
+                // Receive --> JSON String form Server
+                jsonString = getDataFromServ();
+                System.out.println(jsonString);
+                String answer = QuestionHandler.editJSON(jsonString);
+                sendDataToServ(answer);
+            }
+
+            // Close Socket
+            closeServerConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void closeServerConnection() throws IOException {
+    private void connectToServer(InetAddress address, int port) throws IOException {
+        socket = new Socket(address, port);
+        // Create Buffers
+        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    }
+
+    private void closeServerConnection() throws IOException {
         if (!socket.isClosed()) {
+            reader.close();
+            writer.close();
             socket.close();
         }
     }
 
-    public static String readStringFromServ() {
-        StringBuilder input = new StringBuilder();
-        BufferedReader reader = new BufferedReader(Client.input);
+    private String getDataFromServ() {
+        StringBuilder inputString = new StringBuilder();
         try {
             String line;
             while ((line = reader.readLine()) != null) {
-                input.append(line);
+                inputString.append(line);
             }
-            return input.toString();
+            return inputString.toString();
         } catch (IOException ex) {
             System.out.println("I/O error: " + ex.getMessage());
         }
         return null;
     }
 
-    public static void writeStringToServ(String json) {
-        BufferedWriter writer = new BufferedWriter(output);
+    private void sendDataToServ(String json) {
         try {
             writer.write(json);
             writer.flush();

@@ -1,7 +1,9 @@
 import client.Client;
+import client.QuestionHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class MainClient {
 
@@ -11,22 +13,10 @@ public class MainClient {
         // Server - Port    --> 10000
 
         try {
-            Client.connectToServer(InetAddress.getLocalHost(), 10000);
-
-            String message = "Befragung1";
-
-            // Send Request to Server
-            Client.writeStringToServ(message);
-
-            // Receive Answer from Server
-            String receiveString = Client.readStringFromServ();
-
-            System.out.println(receiveString);
-
-        } catch (IOException e) {
+            new Client(InetAddress.getLocalHost(), 10000);
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-
 
     }
 }
