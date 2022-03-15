@@ -39,8 +39,14 @@ public class ClientThread extends Thread {
 
             for (Frage frage:
                  befragung.getFragen()) {
-                writer.write("");
+                writer.write(frage.toJson());
+                writer.flush();
+                reader.readLine();
             }
+
+            writer.write("ENDE");
+            writer.flush();
+
 
             socket.close();
         } catch (IOException e) {

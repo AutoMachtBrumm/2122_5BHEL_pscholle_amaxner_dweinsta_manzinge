@@ -6,13 +6,11 @@ import java.util.Vector;
 public class Befragung {
     private int id;
     private String name;
-    private int seconds;
     private Vector<Frage> fragen= new Vector<>();
 
-    public Befragung(int id, String name, int seconds, Vector<Frage> fragen) {
+    public Befragung(int id, String name) {
         this.id = id;
         this.name = name;
-        this.seconds = seconds;
     }
 
     public int getId() {
@@ -31,19 +29,11 @@ public class Befragung {
         this.name = name;
     }
 
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
     public Vector<Frage> getFragen() {
         return fragen;
     }
 
-    public void setFragen(Vector<Frage> fragen) {
-        this.fragen = fragen;
+    public void addFrage(Frage frage) {
+        this.fragen.add(frage);
     }
 }

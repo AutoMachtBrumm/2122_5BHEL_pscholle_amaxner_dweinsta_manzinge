@@ -1,24 +1,26 @@
 package Fragen;
 
+import org.json.JSONObject;
+
 import java.util.Vector;
 
-public class FrageBool extends Frage{
-    private Vector<Boolean> antwortBool=new Vector<>();
+public class FrageBool extends Frage {
 
-    public FrageBool(int id, int nr, String text) {
-        super(id, nr, text);
+    public FrageBool(int id, int nr,int zeit, String text) {
+        super(id, nr,zeit, text);
     }
 
-    public Vector<Boolean> getAntwortBool() {
-        return antwortBool;
-    }
-
-    public void addAntwortBool(boolean v) {
-        antwortBool.add(v);
-    }
 
     @Override
-    public void toJson() {
+    public String toJson() {
+        JSONObject obj = new JSONObject();
+
+        obj.put("nr", nr);
+        obj.put("typ", "bool");
+        obj.put("zeit",seconds);
+        obj.put("text", text);
+
+        return obj.toString();
 
     }
 }

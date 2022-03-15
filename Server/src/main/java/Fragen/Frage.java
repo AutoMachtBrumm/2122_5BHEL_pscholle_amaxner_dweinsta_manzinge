@@ -2,13 +2,15 @@ package Fragen;
 
 public abstract class Frage
 {
-    private int id;
-    private int nr;
-    private String text;
+    protected int id;
+    protected int nr;
+    protected int seconds;
+    protected String text;
 
-    public Frage(int id, int nr, String text) {
+    public Frage(int id, int nr, int seconds, String text) {
         this.id = id;
         this.nr = nr;
+        this.seconds=seconds;
         this.text = text;
     }
 
@@ -28,6 +30,14 @@ public abstract class Frage
         this.nr = nr;
     }
 
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
     public String getText() {
         return text;
     }
@@ -36,6 +46,6 @@ public abstract class Frage
         this.text = text;
     }
 
-    public abstract void toJson();
+    public abstract String toJson();
 }
 

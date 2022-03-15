@@ -5,6 +5,7 @@
     {
       "nr": 1,
       "typ": "bool",
+      "zeit": 10,
       "text": "Sind Sie bereit für die kommenden Fragen?"
     },
     {

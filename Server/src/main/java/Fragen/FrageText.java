@@ -1,24 +1,26 @@
 package Fragen;
 
+import org.json.JSONObject;
+
 import java.util.Vector;
 
-public class FrageText extends Frage{
-    private Vector<String> antwortText= new Vector<>();
+public class FrageText extends Frage {
 
-    public FrageText(int id, int nr, String text) {
-        super(id, nr, text);
+    public FrageText(int id, int nr, int seconds, String text) {
+        super(id, nr, seconds, text);
     }
 
-    public Vector<String> getAntwortText() {
-        return antwortText;
-    }
 
-    public void addAntwortText(String v) {
-        antwortText.add(v);
-    }
 
     @Override
-    public void toJson() {
+    public String toJson() {
+        JSONObject obj = new JSONObject();
+
+        obj.put("nr", nr);
+        obj.put("typ", "text");
+        obj.put("text", text);
+
+        return obj.toString();
 
     }
 }
