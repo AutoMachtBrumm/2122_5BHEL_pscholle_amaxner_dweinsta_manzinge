@@ -1,7 +1,10 @@
 import Fragen.Frage;
+import Fragen.FrageBool;
+import Fragen.FrageText;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -41,7 +44,20 @@ public class ClientThread extends Thread {
                  befragung.getFragen()) {
                 writer.write(frage.toJson());
                 writer.flush();
-                reader.readLine();
+                String answer=reader.readLine();
+                if(frage instanceof FrageText){
+                    DBController.insertAntwortText(answer,frage.getId());
+                }else if(frage instanceof FrageBool){
+                    boolean rv;
+                    if (answer.equals("0"))
+                        rv=false;
+                    else
+                        rv=true;
+
+                    DBController.insertAntwortBool(rv,frage.getId());
+                }else{
+                    DBController.insertAntwortNum(Integer.parseInt(answer),frage.getId());
+                }
             }
 
             writer.write("ENDE");
@@ -51,6 +67,8 @@ public class ClientThread extends Thread {
             socket.close();
         } catch (IOException e) {
         } catch (NullPointerException e) {
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
     }

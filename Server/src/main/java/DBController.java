@@ -15,22 +15,32 @@ public class DBController {
         ResultSet resultSet = runQuerryWR("insert into polling.befragung(name) values ('" + befragung.getName() + "')  RETURNING id");
         resultSet.next();
         befragung.setId(resultSet.getInt("id"));
+        for (Frage frage: befragung.getFragen()) {
+            if(frage instanceof FrageText){
+                insertFrageText((FrageText) frage,befragung.getId());
+            }else if(frage instanceof FrageBool){
+                insertFrageBool((FrageBool) frage,befragung.getId());
+            }else if(frage instanceof FrageNum){
+                insertFrageNum((FrageNum) frage,befragung.getId());
+            }
+        }
+
     }
 
-    public static void insertFrageBool(FrageBool frageBool, int befragung_id) throws SQLException {
+    private static void insertFrageBool(FrageBool frageBool, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageBool.getNr() + ",'" + frageBool.getText() + "', 'bool', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageBool.setId(resultSet.getInt("id"));
     }
 
-    public static void insertFrageText(FrageText frageText, int befragung_id) throws SQLException {
+    protected static void insertFrageText(FrageText frageText, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageText.getNr() + ",'" + frageText.getText() + "', 'text', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageText.setId(resultSet.getInt("id"));
     }
 
 
-    public static void insertFrageNum(FrageNum frageNum, int befragung_id) throws SQLException {
+    protected static void insertFrageNum(FrageNum frageNum, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageNum.getNr() + ",'" + frageNum.getText() + "', 'nume', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageNum.setId(resultSet.getInt("id"));
