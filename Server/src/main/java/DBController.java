@@ -1,13 +1,9 @@
-import Fragen.Frage;
-import Fragen.FrageBool;
-import Fragen.FrageNum;
-import Fragen.FrageText;
+import Fragen.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.stream.Stream;
 
 public class DBController {
 
