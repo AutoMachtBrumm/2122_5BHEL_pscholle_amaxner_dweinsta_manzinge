@@ -1,4 +1,6 @@
-package client;
+package sample.client;
+
+import sample.client.utils.QuestionHandler;
 
 import java.io.*;
 import java.net.InetAddress;

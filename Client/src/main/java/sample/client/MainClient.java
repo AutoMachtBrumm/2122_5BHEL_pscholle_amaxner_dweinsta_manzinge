@@ -1,4 +1,4 @@
-import client.Client;
+package sample.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -29,11 +29,11 @@ public class MainClient extends Application {
     public void initRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainClient.class.getResource("jfx/fxml/RootLayout.fxml"));
-            rootLayout = loader.load();
-            Scene scene = new Scene(rootLayout, 850, 530);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+            loader.setLocation(MainClient.class.getResource("RootLayout.fxml"));
+            this.rootLayout = loader.load();
+            Scene scene = new Scene(this.rootLayout, 850, 530);
+            this.primaryStage.setScene(scene);
+            this.primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,10 +58,13 @@ public class MainClient extends Application {
         // Server - Address --> "localhost"
         // Server - Port    --> 10000
 
+        /*
         try {
             new Client(InetAddress.getByName("localhost"), 10000);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+         */
     }
 }
