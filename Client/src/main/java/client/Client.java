@@ -13,6 +13,7 @@ public class Client {
 
             // Create Socket
             this.socket = new Socket(address, port);
+            System.out.println("\nConnected to Server ...");
             // Starts ClientThread
             new ClientThread(socket).start();
 
@@ -41,14 +42,16 @@ class ClientThread extends Thread {
         // Starts ClientThread
         isRunning = true;
         try {
+            System.out.println("Sending Authentication Key ...");
             // Send Authentication Key
             sendDataToServ("Befragung1");
 
             String response;
             while (isRunning) {
                 // Response --> Question
-                response = getDataFromServ();
-                System.out.println("Server: " + response);
+
+                response = reader.readLine();
+                System.out.println("Server:" + response);
 
                 if (response.equals("ENDE")) {
                     isRunning = false;
@@ -78,17 +81,9 @@ class ClientThread extends Thread {
         }
     }
 
-    private String getDataFromServ() throws IOException {
-        StringBuilder inputString = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            inputString.append(line);
-        }
-        return inputString.toString();
-    }
-
-    private void sendDataToServ(String json) throws IOException {
-        writer.write(json);
+    private void sendDataToServ(String string) throws IOException {
+        System.out.println("Client: " + string);
+        writer.write(string);
         writer.flush();
     }
 }
