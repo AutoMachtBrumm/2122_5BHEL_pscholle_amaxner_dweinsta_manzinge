@@ -12,6 +12,11 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
+
+        // TODO Scholler: Remove - Just for testing
+        JSONConverter.toBefragung("maxna/fragen.json");
+
+
         Server server = new Server();
 
         Befragung befragung=new Befragung(1,"Befragung2");
