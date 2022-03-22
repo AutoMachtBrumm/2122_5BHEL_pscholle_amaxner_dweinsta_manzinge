@@ -3,4 +3,8 @@
 
 Database
 
-Java -> Database connectivety // views in db ??
+Java -> Database connectivety 
+- Insert, Select
+- functions in db
+
+JSON to Java Class
