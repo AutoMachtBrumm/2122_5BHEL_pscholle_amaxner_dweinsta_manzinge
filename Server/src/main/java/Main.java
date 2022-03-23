@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import javax.swing.text.html.HTMLDocument;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.Vector;
@@ -37,5 +38,9 @@ public class Main extends Application {
         server.befragungen.add(befragung);
         server.startServer();
 
+    }
+
+    public static void main(String[] args) {
+        launch(args);
     }
 }
