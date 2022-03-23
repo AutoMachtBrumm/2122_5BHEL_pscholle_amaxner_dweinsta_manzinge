@@ -1,6 +1,5 @@
-import Fragen.Frage;
+package Befragung;
 
-import java.util.List;
 import java.util.Vector;
 
 public class Befragung {

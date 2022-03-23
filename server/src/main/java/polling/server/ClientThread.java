@@ -1,11 +1,11 @@
-import Fragen.Frage;
-import Fragen.FrageBool;
-import Fragen.FrageText;
+package polling.server;
+
+import Befragung.*;
+
 
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.Random;
 import java.util.Vector;
 
 public class ClientThread extends Thread {
@@ -34,7 +34,7 @@ public class ClientThread extends Thread {
                     }
                 }
                 if (befragung == null) {
-                    writer.write("Befragung nicht gefunden\n");
+                    writer.write("Fragen.Befragung nicht gefunden\n");
                     writer.flush();
                 }
             } while (befragung == null);

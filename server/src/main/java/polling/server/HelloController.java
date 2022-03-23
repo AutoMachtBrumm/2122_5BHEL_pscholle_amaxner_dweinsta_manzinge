@@ -1,4 +1,4 @@
-package polling.auswertung;
+package polling.server;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

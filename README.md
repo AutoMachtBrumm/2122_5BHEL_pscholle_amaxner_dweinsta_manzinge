@@ -6,7 +6,7 @@ Polling Project Repository: [GIT](https://github.com/AutoMachtBrumm/2122_5BHEL_p
 
 ANZINGER: Client & JavaFX 
 
-WEINSTABEL: Server
+WEINSTABEL: polling.server.Server
 
 SCHOLLER: Datenbank
 
