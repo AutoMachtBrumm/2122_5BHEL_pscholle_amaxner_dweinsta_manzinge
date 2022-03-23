@@ -56,6 +56,15 @@ public class DBController {
         runQuerryWOR("insert into polling.antwortnum(frage_id, antwort)  values (" + frage_id + ", " + antwort + ")");
     }
 
+    public static void getAuswertungBool(FrageBool frageBool) throws SQLException {
+        ResultSet resultSet = runQuerryWR("SELECT * FROM boolAuswertung("+frageBool.getId()+")");
+        while(resultSet.next()){
+            System.out.println(resultSet.getInt("count"));
+            System.out.println(resultSet.getBoolean("bool"));
+        }
+    }
+
+
     /*
      *  Run SQL queries with returning ResultSet
      */

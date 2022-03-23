@@ -1,24 +1,22 @@
-package client;
-
-import org.json.JSONObject;
+package sample.client.utils;
 
 import java.util.Scanner;
 
-public class QuestionHandler {
+import org.json.JSONObject;
 
-    private static String result;
+public class QuestionHandler {
 
     public static String editJSON(String jsonString){
 
         JSONObject jObj = new JSONObject(jsonString);
 
         // Print Question
-        System.out.println(jObj.getString("text"));
-
+        System.out.println("Question: "+ jObj.getString("text"));
 
         // Wird später über grafische Oberfläche eingelesen
         Scanner scanner = new Scanner(System.in);
-        result = scanner.nextLine();
+        System.out.print("Client: ");
+        String result = scanner.nextLine();
 
         return result;
     }
