@@ -1,4 +1,6 @@
-import Fragen.*;
+package polling.server;
+
+import Befragung.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

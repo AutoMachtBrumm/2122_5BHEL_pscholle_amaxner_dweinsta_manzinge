@@ -1,4 +1,4 @@
-package Fragen;
+package Befragung;
 
 public abstract class Frage
 {

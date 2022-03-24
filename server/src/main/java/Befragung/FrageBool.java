@@ -1,8 +1,6 @@
-package Fragen;
+package Befragung;
 
 import org.json.JSONObject;
-
-import java.util.Vector;
 
 public class FrageBool extends Frage {
 
