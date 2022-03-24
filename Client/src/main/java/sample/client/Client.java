@@ -5,70 +5,29 @@ import sample.client.utils.QuestionHandler;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Client {
 
     private Socket socket;
+    private BufferedReader reader;
+    private PrintWriter writer;
 
-    public Client(InetAddress address, int port) {
+    public Client(InetAddress address, int port) throws UnknownHostException {
         try {
-
             // Create Socket
-            this.socket = new Socket(address, port);
+            connectToServer(address, port);
             System.out.println("\nConnected to Server ...");
-            // Starts ClientThread
-            new ClientThread(socket).start();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-class ClientThread extends Thread {
-
-    private final Socket socket;
-    private final BufferedReader reader;
-    private final BufferedWriter writer;
-
-    private boolean isRunning = false;
-
-    public ClientThread(Socket s) throws IOException {
-        this.socket = s;
-        this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-    }
-
-    @Override
-    public void run() {
-        // Starts ClientThread
-        isRunning = true;
-        try {
-            System.out.println("Sending Authentication Key ...");
-            // Send Authentication Key
-            sendDataToServ("Befragung1");
-
-            String response;
-            while (isRunning) {
-                // Response --> Question
-
-                response = reader.readLine();
-                System.out.println("Server:" + response);
-
-                if (response.equals("ENDE")) {
-                    isRunning = false;
-                    System.out.println("Client-Server Connection closed");
-                    break;
-                }
-                String answer = QuestionHandler.editJSON(response);
-                System.out.println("Client: " + answer);
-                sendDataToServ(answer);
-            }
         } catch (IOException ex) {
             System.out.println("I/O error: " + ex.getMessage());
-        } finally {
-            closeServerConnection();
+            throw new UnknownHostException("Cant Connect to Server");
         }
+    }
+
+    private void connectToServer(InetAddress address, int port) throws IOException {
+        this.socket = new Socket(address, port);
+        this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.writer = new PrintWriter(socket.getOutputStream());
     }
 
     private void closeServerConnection() {
@@ -83,9 +42,37 @@ class ClientThread extends Thread {
         }
     }
 
-    private void sendDataToServ(String string) throws IOException {
-        System.out.println("Client: " + string);
-        writer.write(string);
+    public void startCommunication() {
+        new Thread(() -> {
+            String inputLine;
+            try {
+                while ((inputLine = reader.readLine()) != null) {
+                    if ("ENDE".equals(inputLine)) break;
+                    System.out.println("Server: " + inputLine);
+                    String answer = QuestionHandler.getAnswer(inputLine);
+                    sendDataToServer(answer);
+                }
+            } catch (IOException ex) {
+                System.out.println("An error has occurred during data transmission: " + ex.getMessage());
+            } finally {
+                // Close Connection to Server
+                closeServerConnection();
+                System.out.println("Close Client - Server Connection");
+            }
+        }).start();
+    }
+
+    public void sendAuthenticationKey(String key) throws IOException {
+        sendDataToServer(key);
+        if(!"ACCEPT".equals(reader.readLine())){
+            throw new IOException();
+        }
+        System.out.println("Server: ACCEPT");
+    }
+
+    public void sendDataToServer(String message) {
+        writer.write(message);
         writer.flush();
+        System.out.println("Client: " + message);
     }
 }
