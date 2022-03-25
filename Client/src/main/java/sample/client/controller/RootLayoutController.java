@@ -6,10 +6,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import org.json.JSONObject;
 import sample.client.Client;
+import sample.client.utils.ViewControl;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
@@ -25,15 +26,12 @@ public class RootLayoutController implements Initializable {
 
     Client client;
 
-    /* DEFINE SERVER ADDRESS AND PORTS */
-    final Integer PORT = 10000;
-    final String ADDRESS = "localhost";
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnCon.setDisable(true);
         try {
-            client = new Client(InetAddress.getByName(ADDRESS), PORT);
+            // Creates Client and Connect to Server
+            client = Client.getClient();
             btnCon.setDisable(false);
         } catch (UnknownHostException ex) {
             System.out.println("UnknownHostException: " + ex.getMessage());
@@ -44,11 +42,16 @@ public class RootLayoutController implements Initializable {
     public void startConnection(ActionEvent actionEvent) {
         try {
             // Send Authentication Key
-            System.out.println("Sending Authentication Key ...");
+            System.out.println("Sending Authentication Key ...\n");
             client.sendAuthenticationKey(tFKey.getText());
-            // Start Data Transfer and closes connection if transfer is done
-            client.startCommunication();
+
+            // Request Question and save it in ViewControl
+            String json = client.getDataFromServer();
+            ViewControl.setJSONObject(new JSONObject(json));
+            // Change Scene
+            ViewControl.nextScene(actionEvent, json);
         } catch (IOException ex) {
+            // Throws IOException if Authentication Key is wrong
             System.out.println("I/O error: A-KEY might be wrong");
             lbERROR.setText("A-KEY might be wrong");
         }

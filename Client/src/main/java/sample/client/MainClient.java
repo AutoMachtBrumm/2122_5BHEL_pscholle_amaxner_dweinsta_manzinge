@@ -3,10 +3,9 @@ package sample.client;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import sample.client.utils.ViewControl;
 
 import java.io.IOException;
 
@@ -17,15 +16,15 @@ public class MainClient extends Application {
         primaryStage.setTitle("QUESTIONING");
         primaryStage.initStyle(StageStyle.DECORATED);
 
-        BorderPane rootLayout = loadRootLayout();
-        ViewControl.initViewControl(rootLayout);
+        AnchorPane rootLayout = loadRootLayout();
 
-        primaryStage.setScene(new Scene(rootLayout, 850, 530));
+        // Set Login Scene
+        primaryStage.setScene(new Scene(rootLayout, 750, 450));
         primaryStage.show();
     }
 
-    //Initializes the root layout.
-    public BorderPane loadRootLayout() {
+    //Initializes the RootLayout.
+    public AnchorPane loadRootLayout() {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainClient.class.getResource("RootLayout.fxml"));

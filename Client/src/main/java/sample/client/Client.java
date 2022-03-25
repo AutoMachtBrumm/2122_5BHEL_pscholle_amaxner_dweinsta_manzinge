@@ -1,6 +1,6 @@
 package sample.client;
 
-import sample.client.utils.QuestionHandler;
+import sample.client.utils.ViewControl;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -13,9 +13,15 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    public Client(InetAddress address, int port) throws UnknownHostException {
+    /* DEFINE SERVER ADDRESS AND PORTS */
+    private static final Integer PORT = 10000;
+    private static final String ADDRESS = "localhost";
+
+    public static Client client;
+
+    private Client(InetAddress address, int port) throws UnknownHostException {
         try {
-            // Create Socket
+            // Create Socket and Buffers
             connectToServer(address, port);
             System.out.println("\nConnected to Server ...");
         } catch (IOException ex) {
@@ -24,17 +30,22 @@ public class Client {
         }
     }
 
+    public static Client getClient() throws UnknownHostException {
+        if (client == null) {
+            client = new Client(InetAddress.getByName(ADDRESS), PORT);
+        }
+        return client;
+    }
+
     private void connectToServer(InetAddress address, int port) throws IOException {
         this.socket = new Socket(address, port);
         this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.writer = new PrintWriter(socket.getOutputStream());
     }
 
-    private void closeServerConnection() {
+    public void closeServerConnection() {
         try {
             if (!socket.isClosed()) {
-                reader.close();
-                writer.close();
                 socket.close();
             }
         } catch (IOException ex) {
@@ -42,36 +53,33 @@ public class Client {
         }
     }
 
-    public void startCommunication() {
-        new Thread(() -> {
-            String inputLine;
-            try {
-                while ((inputLine = reader.readLine()) != null) {
-                    if ("ENDE".equals(inputLine)) break;
-                    System.out.println("Server: " + inputLine);
-                    String answer = QuestionHandler.getAnswer(inputLine);
-                    sendDataToServer(answer);
-                }
-            } catch (IOException ex) {
-                System.out.println("An error has occurred during data transmission: " + ex.getMessage());
-            } finally {
-                // Close Connection to Server
-                closeServerConnection();
-                System.out.println("Close Client - Server Connection");
-            }
-        }).start();
-    }
-
     public void sendAuthenticationKey(String key) throws IOException {
         sendDataToServer(key);
-        if(!"ACCEPT".equals(reader.readLine())){
+        if (!("ACCEPT".equals(reader.readLine()))) {
             throw new IOException();
         }
         System.out.println("Server: ACCEPT");
     }
 
+    public String getDataFromServer() {
+        String inputLine = null;
+        try {
+            inputLine = reader.readLine();
+            System.out.println("Server: " + inputLine);
+
+            if ("ENDE".equals(inputLine)) {
+                // Close Connection to Server
+                closeServerConnection();
+                System.out.println("Close Client - Server Connection");
+            }
+        } catch (IOException ex) {
+            System.out.println("An error has occurred during data transmission: " + ex.getMessage());
+        }
+        return inputLine;
+    }
+
     public void sendDataToServer(String message) {
-        writer.write(message);
+        writer.write(message + "\n");
         writer.flush();
         System.out.println("Client: " + message);
     }

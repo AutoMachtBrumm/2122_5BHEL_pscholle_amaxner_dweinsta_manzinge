@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import org.json.JSONObject;
+import sample.client.Client;
 import sample.client.utils.ViewControl;
 
 import java.net.URL;
@@ -12,7 +14,7 @@ import java.util.ResourceBundle;
 public class BoolQuestViewController implements Initializable {
 
     public Label lbQuest;
-    public ToggleGroup rbtnGroup;
+    public ToggleGroup toggleGroup;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -20,6 +22,14 @@ public class BoolQuestViewController implements Initializable {
     }
 
     public void nextQuestion(ActionEvent actionEvent) {
-        ViewControl.setResult(rbtnGroup.getSelectedToggle().selectedProperty().getName());
+        Client client = Client.client;
+
+        // Get Answer from SelectedToggle
+        String answer = toggleGroup.getSelectedToggle().getUserData().toString();
+        client.sendDataToServer(answer);
+        // Request Question and save it in ViewControl
+        String json = client.getDataFromServer();
+        // Change Scene
+        ViewControl.nextScene(actionEvent, json);
     }
 }

@@ -1,8 +1,12 @@
 package sample.client.utils;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import sample.client.MainClient;
 
@@ -10,44 +14,41 @@ import java.io.IOException;
 
 public class ViewControl {
 
-    private static BorderPane rootLayout;
-    private static String result;
+    private static JSONObject jObj = null;
 
-    private static JSONObject jObj;
-
-    public static void initViewControl(BorderPane rootLayout) {
-        ViewControl.rootLayout = rootLayout;
-        ViewControl.result = null;
-        ViewControl.jObj = null;
+    public static void nextScene(ActionEvent event, String json) {
+        if(!("ENDE".equals(json))){
+            ViewControl.setJSONObject(new JSONObject(json));
+            // Change Scene
+            ViewControl.changeScene(event);
+        } else {
+            System.out.println("CLIENT SAYS GOOD BYE");
+            //TODO: Set Scene after finishing ...
+        }
     }
 
     //Shows the operations view inside the root layout.
-    public static void changeScene() {
-        String url = "";
+    private static void changeScene(ActionEvent event) {
 
-        switch (jObj.getString("typ")) {
-            case "bool" -> url = "BoolQuestView.fxml";
-            case "text" -> url = "TextQuestView.fxml";
-            case "nume" -> url = "NumQuestView.fxml";
-        }
+        String url = switch (jObj.getString("typ")) {
+            case "bool" -> "BoolQuestView.fxml";
+            case "text" -> "TextQuestView.fxml";
+            case "nume" -> "NumeQuestView.fxml";
+            default -> throw new IllegalStateException("Unexpected value: " + jObj.getString("typ"));
+        };
 
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainClient.class.getResource(url));
             AnchorPane questionView = loader.load();
-            // Set Student Operations view into the center of root layout.
-            rootLayout.setCenter(questionView);
+
+            // Get Stage from ActionEvent
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(questionView, 750, 450));
+            stage.show();
         } catch (IOException ex) {
-            System.out.println("I/O error: " + ex.getMessage());
+            ex.printStackTrace();
         }
-    }
-
-    public static void setResult(String result) {
-        ViewControl.result = result;
-    }
-
-    public static String getResult() {
-        return ViewControl.result;
     }
 
     public static void setJSONObject(JSONObject jsonObject) {
@@ -58,11 +59,11 @@ public class ViewControl {
         return jObj.getString("text");
     }
 
-    public static String[] getValueRange(){
+    public static String[] getValueRange() {
         String[] range = new String[2];
 
-        range[0] = jObj.getString("min");
-        range[1] = jObj.getString("max");
+        range[0] = String.valueOf(jObj.getInt("min"));
+        range[1] = String.valueOf(jObj.getInt("max"));
 
         return range;
     }
