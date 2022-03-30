@@ -1,38 +1,64 @@
 package polling.auswertung;
 
-import Befragung.Befragung;
+import Befragung.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DBController {
 
     public static List<Befragung> getBefragungen() throws SQLException {
         List<Befragung> befragungen = new ArrayList<>();
-
         ResultSet resultSet = runQuerryWR("SELECT * FROM polling.befragung");
         while(resultSet.next()){
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
-
             befragungen.add(new Befragung(id, name));
         }
-
         return befragungen;
     }
 
-    public static void getAuswertungBool(int id) throws SQLException {
-        ResultSet resultSet = runQuerryWR("SELECT * FROM boolAuswertung(" + id + ")");
+    public static List<Frage> getFragen(Befragung befragung) throws SQLException {
+        List<Frage> fragen = new ArrayList<>();
+        ResultSet resultSet = runQuerryWR("select * FROM polling.frage FULL OUTER JOIN polling.fragenum f on frage.id = f.frage_id WHERE befragung_id =" + befragung.getId());
         while(resultSet.next()){
-            System.out.println(resultSet.getInt("count"));
-            System.out.println(resultSet.getBoolean("bool"));
+            int id = resultSet.getInt("id");
+            int nr = resultSet.getInt("nr");
+            int seconds = resultSet.getInt("seconds");
+            String text = resultSet.getString("text");
+            String type = resultSet.getString("type");
+
+            switch (type){
+                case "text":
+                    fragen.add(new FrageText(id, nr, seconds, text));
+                    break;
+                case "nume":
+                    int minval = resultSet.getInt("minval");
+                    int maxval = resultSet.getInt("maxval");
+                    fragen.add(new FrageNum(id, nr, seconds, text, minval, maxval));
+                    break;
+                case "bool":
+                    fragen.add(new FrageBool(id, nr, seconds, text));
+                    break;
+                default:
+                    System.err.println("Undefined type ='" + type + "' for Frage !");
+                    break;
+            }
         }
+        return fragen;
     }
 
+    public static HashMap<Boolean, Integer> getAuswertungBool(int id) throws SQLException {
+        HashMap<Boolean, Integer> hashMap = new HashMap<>();
+        ResultSet resultSet = runQuerryWR("SELECT * FROM boolAuswertung(" + id + ")");
+        while(resultSet.next()){
+            hashMap.put(resultSet.getBoolean("bool"), resultSet.getInt("count"));
+        }
+        return hashMap;
+    }
 
     /*
      *  Run SQL queries with returning ResultSet

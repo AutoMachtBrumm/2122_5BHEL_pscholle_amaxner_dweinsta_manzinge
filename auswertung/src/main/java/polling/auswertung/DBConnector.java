@@ -9,11 +9,9 @@ public class DBConnector {
     private static Connection conn;
 
     public static Connection connect(String connectionurl,String user, String password) throws ClassNotFoundException, SQLException {
-
         if(conn!=null){
-            throw new SQLException("Connection already exists");
+            throw new SQLException("Connection already exists!");
         }
-
         Class.forName("org.postgresql.Driver");
         conn = DriverManager.getConnection(connectionurl, user, password);
         return conn;
