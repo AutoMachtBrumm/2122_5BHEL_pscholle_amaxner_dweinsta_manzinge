@@ -1,43 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.effect.DropShadow?>
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="sample.client.controller.RootLayoutController">
-    <top>
-        <AnchorPane prefHeight="30.0" prefWidth="800.0" style="-fx-background-color: #222;"
-                    BorderPane.alignment="CENTER">
+<AnchorPane prefHeight="450.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.client.controller.RootLayoutController">
+    <children>
+        <VBox alignment="CENTER_LEFT" layoutX="367.0" layoutY="198.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button id="btnExit" alignment="CENTER" layoutX="768.0" layoutY="1.0" mnemonicParsing="false"
-                        onAction="#exit" prefHeight="30.0" prefWidth="30.0" text="X" textFill="WHITE"
-                        AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="768.0" AnchorPane.rightAnchor="0.0"
-                        AnchorPane.topAnchor="0.0">
+                <Label text="WELCOME">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="Arial Narrow Bold" size="51.0" />
                     </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
-                </Button>
-                <Button id="btnHelp" alignment="CENTER" layoutX="14.0" layoutY="-1.0" mnemonicParsing="false"
-                        onAction="#help" prefHeight="30.0" prefWidth="100.0" text="HELP" textFill="WHITE"
-                        AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                </Label>
+                <Label layoutX="10.0" layoutY="212.0" prefHeight="50.0" prefWidth="505.0" text="This application connects to a server that will ask you a series of questions. By means of an authentication key the questioning will be started." wrapText="true">
                     <font>
-                        <Font name="System Bold" size="12.0"/>
+                        <Font name="Arial Italic" size="15.0" />
                     </font>
-                    <cursor>
-                        <Cursor fx:constant="HAND"/>
-                    </cursor>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </Label>
+                <VBox spacing="10.0">
+                    <VBox.margin>
+                        <Insets bottom="30.0" top="50.0" />
+                    </VBox.margin>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                            <children>
+                                <Label prefHeight="22.0" prefWidth="208.0" text="Enter Athentication key: ">
+                                    <font>
+                                        <Font name="Arial Bold" size="17.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="tFKey" prefHeight="26.0" prefWidth="310.0" />
+                            </children>
+                        </HBox>
+                        <Label fx:id="lbERROR" prefHeight="20.0" prefWidth="300.0" textFill="RED">
+                            <VBox.margin>
+                                <Insets left="230.0" />
+                            </VBox.margin>
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <Button fx:id="btnCon" mnemonicParsing="false" onAction="#startConnection" prefHeight="35.0" prefWidth="300.0" style="-fx-background-color: #373737;" text="Start Questioning" textFill="WHITE">
+                    <VBox.margin>
+                        <Insets left="230.0" />
+                    </VBox.margin>
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
                 </Button>
             </children>
-            <effect>
-                <DropShadow height="10.0" radius="2.0" width="0.0"/>
-            </effect>
-        </AnchorPane>
-    </top>
-</BorderPane>
+        </VBox>
+    </children>
+</AnchorPane>

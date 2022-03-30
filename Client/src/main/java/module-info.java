@@ -8,4 +8,6 @@ module sample.client {
     exports sample.client;
     exports sample.client.controller;
     opens sample.client.controller to javafx.fxml;
+    exports sample.client.utils;
+    opens sample.client.utils to javafx.fxml;
 }

@@ -30,7 +30,12 @@ public class ClientThread extends Thread {
                         befragungen) {
                     if (bef.getName().equals(befname)) {
                         befragung = bef;
+                        writer.write("ACCEPT\n");
+                        writer.flush();
                         break;
+                    } else {
+                        writer.write("WRONG\n");
+                        writer.flush();
                     }
                 }
                 if (befragung == null) {
@@ -42,7 +47,7 @@ public class ClientThread extends Thread {
 
             for (Frage frage:
                  befragung.getFragen()) {
-                writer.write(frage.toJson());
+                writer.write(frage.toJson()+"\n");
                 writer.flush();
                 String answer=reader.readLine();
                 if(frage instanceof FrageText){
@@ -60,7 +65,7 @@ public class ClientThread extends Thread {
                 }
             }
 
-            writer.write("ENDE");
+            writer.write("ENDE\n");
             writer.flush();
 
 
