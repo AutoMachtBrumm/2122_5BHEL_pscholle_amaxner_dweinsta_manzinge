@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBController {
 
@@ -58,12 +60,15 @@ public class DBController {
         runQuerryWOR("insert into polling.antwortnum(frage_id, antwort)  values (" + frage_id + ", " + antwort + ")");
     }
 
-    public static void getAuswertungBool(FrageBool frageBool) throws SQLException {
-        ResultSet resultSet = runQuerryWR("SELECT * FROM boolAuswertung("+frageBool.getId()+")");
+    public static List<Befragung> getBefragungen() throws SQLException {
+        List<Befragung> befragungen = new ArrayList<>();
+        ResultSet resultSet = runQuerryWR("SELECT * FROM polling.befragung");
         while(resultSet.next()){
-            System.out.println(resultSet.getInt("count"));
-            System.out.println(resultSet.getBoolean("bool"));
+            int id = resultSet.getInt("id");
+            String name = resultSet.getString("name");
+            befragungen.add(new Befragung(id, name));
         }
+        return befragungen;
     }
 
 

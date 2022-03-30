@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="polling.auswertung.FxController">
+    <left>
+        <ListView fx:id="listViewBefragungen" maxWidth="250" prefHeight="400.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+    </left>
+    <right>
+        <VBox alignment="BOTTOM_RIGHT" prefHeight="400.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <children>
+            <AnchorPane fx:id="AnchorPaneCharts" prefHeight="200.0" prefWidth="200.0" />
+            </children>
+        </VBox>
+    </right>
+    <center>
+        <VBox maxWidth="150" prefHeight="364.0" prefWidth="144.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Antworten Ja - Nein" />
+                <TextField fx:id="textFieldAntwortenBool" editable="false" />
+                <Label text="Antworten Numerisch" />
+                <TextField fx:id="textFieldAntwortenNum" editable="false" />
+                <Label text="Antworten Text" />
+                <TextField fx:id="textFieldAntwortenText" editable="false" />
+            </children>
+        </VBox>
+    </center>
+    <top>
+        <Label text="Auswertung" BorderPane.alignment="CENTER">
+            <font>
+                <Font size="30.0" />
+            </font>
+        </Label>
+    </top>
+   <bottom>
+      <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <items>
+            <Label fx:id="lblStatus" alignment="TOP_LEFT" contentDisplay="RIGHT" text="Lbl">
+            </Label>
+            <Button fx:id="buttonLoadBefragung" mnemonicParsing="false" text="Befragungen Laden" onAction="#btnBefragungenLaden">
+            </Button>
+        </items>
+      </ToolBar>
+   </bottom>
+</BorderPane>
