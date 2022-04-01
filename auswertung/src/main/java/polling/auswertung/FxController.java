@@ -1,28 +1,27 @@
 package polling.auswertung;
 
 import Befragung.*;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class FxController implements Initializable {
     @FXML
@@ -36,7 +35,6 @@ public class FxController implements Initializable {
     @FXML
     public Button buttonLoadBefragung;
     public ListView listViewFragen;
-    public Label lblAnzAntworten;
     public AnchorPane anchorPaneAuswertung;
     @FXML
     private TextField textFieldAntwortenBool;
@@ -97,6 +95,13 @@ public class FxController implements Initializable {
 
     public void auswertungText(int id){
         anchorPaneAuswertung.getChildren().clear();
+        ListView listViewAntworten = new ListView();
+        try {
+            listViewAntworten.setItems(FXCollections.observableArrayList(DBController.getAuswertungText(id)));
+            anchorPaneAuswertung.getChildren().add(listViewAntworten);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -118,8 +123,44 @@ public class FxController implements Initializable {
 
     public void auswertungNum(int id){
         anchorPaneAuswertung.getChildren().clear();
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        try {
+            hashMap = DBController.getAuswertungNumMinMax(id);
+            List<Integer> integerList = DBController.getAuswertungNum(id);
+
+            Map<Integer, Long> counts = integerList.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
+
+            System.out.println(counts);
+
+
+            CategoryAxis xAxis = new CategoryAxis();
+            NumberAxis yAxis = new NumberAxis();
+
+            BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
+
+            XYChart.Series series = new XYChart.Series();
+
+            counts.forEach((integer, aLong) -> {
+                series.getData().add(new XYChart.Data(integer.toString(), aLong));
+            });
+
+            barChart.getData().add(series);
+
+            xAxis.setLabel("Wert");
+            yAxis.setLabel("Anz Antworten");
+
+
+            anchorPaneAuswertung.getChildren().add(barChart);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
+
+
+
 
     private void connectToDB(String url, String user, String password){
         try {

@@ -30,7 +30,6 @@ public class DBController {
             int seconds = resultSet.getInt("seconds");
             String text = resultSet.getString("text");
             String type = resultSet.getString("type");
-
             switch (type){
                 case "text":
                     fragen.add(new FrageText(id, nr, seconds, text));
@@ -56,6 +55,34 @@ public class DBController {
         ResultSet resultSet = runQuerryWR("SELECT * FROM boolAuswertung(" + id + ")");
         while(resultSet.next()){
             hashMap.put(resultSet.getBoolean("bool"), resultSet.getInt("count"));
+        }
+        return hashMap;
+    }
+
+    public static List<String> getAuswertungText(int id) throws SQLException {
+        List<String> antworten = new ArrayList<>();
+        ResultSet resultSet = runQuerryWR("SELECT antwort FROM polling.antworttext WHERE frage_id=" + id);
+        while(resultSet.next()){
+            antworten.add(resultSet.getString("antwort"));
+        }
+        return antworten;
+    }
+
+    public static List<Integer> getAuswertungNum(int id) throws SQLException {
+        List<Integer> antworten = new ArrayList<>();
+        ResultSet resultSet = runQuerryWR("SELECT antwort FROM polling.antwortnum WHERE frage_id =" + id);
+        while(resultSet.next()){
+            antworten.add(resultSet.getInt("antwort"));
+        }
+        return antworten;
+    }
+
+    public static HashMap<String, Integer> getAuswertungNumMinMax(int id) throws SQLException {
+        HashMap<String, Integer> hashMap = new HashMap<>();
+        ResultSet resultSet = runQuerryWR("SELECT minval, maxval FROM polling.fragenum WHERE frage_id =" + id);
+        while(resultSet.next()){
+            hashMap.put("min", resultSet.getInt("minval"));
+            hashMap.put("max", resultSet.getInt("maxval"));
         }
         return hashMap;
     }

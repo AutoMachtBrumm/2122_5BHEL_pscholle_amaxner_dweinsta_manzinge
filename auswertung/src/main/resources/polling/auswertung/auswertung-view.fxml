@@ -6,7 +6,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="polling.auswertung.FxController">
     <left>
-        <ListView fx:id="listViewBefragungen" maxWidth="250" onMouseClicked="#onListViewBefragungenClicked" prefHeight="400.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+        <ListView fx:id="listViewBefragungen" onMouseClicked="#onListViewBefragungenClicked" prefHeight="400.0" prefWidth="200.0" />
     </left>
     <right>
         <AnchorPane fx:id="anchorPaneAuswertung" />
@@ -14,8 +14,7 @@
     <center>
         <VBox prefWidth="250.0" BorderPane.alignment="CENTER">
             <children>
-                <ListView fx:id="listViewFragen" maxWidth="250" onMouseClicked="#onListViewFragenClicked" prefHeight="308.0" prefWidth="250.0" />
-            <Label fx:id="lblAnzAntworten" text="Antworten" />
+                <ListView fx:id="listViewFragen" onMouseClicked="#onListViewFragenClicked" prefHeight="400.0" prefWidth="400.0" />
             </children>
         </VBox>
     </center>
