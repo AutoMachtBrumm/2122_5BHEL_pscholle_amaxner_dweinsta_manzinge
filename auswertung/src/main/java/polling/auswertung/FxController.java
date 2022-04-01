@@ -93,6 +93,10 @@ public class FxController implements Initializable {
         }
     }
 
+    /*
+     *  @Param      id of "Frage"
+     *  Analyzes the Data from the answers and visualizes them
+     */
     public void auswertungText(int id){
         anchorPaneAuswertung.getChildren().clear();
         ListView listViewAntworten = new ListView();
@@ -123,19 +127,17 @@ public class FxController implements Initializable {
 
     public void auswertungNum(int id){
         anchorPaneAuswertung.getChildren().clear();
-        HashMap<String, Integer> hashMap = new HashMap<>();
+
         try {
-            hashMap = DBController.getAuswertungNumMinMax(id);
+            // HashMap<String, Integer> hashMap = DBController.getAuswertungNumMinMax(id);
             List<Integer> integerList = DBController.getAuswertungNum(id);
 
             Map<Integer, Long> counts = integerList.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
 
             System.out.println(counts);
 
-
             CategoryAxis xAxis = new CategoryAxis();
             NumberAxis yAxis = new NumberAxis();
-
             BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
 
             XYChart.Series series = new XYChart.Series();
@@ -145,23 +147,20 @@ public class FxController implements Initializable {
             });
 
             barChart.getData().add(series);
-
-            xAxis.setLabel("Wert");
-            yAxis.setLabel("Anz Antworten");
-
+            xAxis.setLabel("Number");
+            yAxis.setLabel("Amount of answers");
 
             anchorPaneAuswertung.getChildren().add(barChart);
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-
-
-
+    /*
+     *  Private Methode
+     *  Connect to Database; Display the connection status in the application
+     */
     private void connectToDB(String url, String user, String password){
         try {
             DBConnector.connect(url, user, password);
