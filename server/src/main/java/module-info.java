@@ -5,6 +5,7 @@ module polling.server {
     requires org.json;
 
 
+
     opens polling.server to javafx.fxml;
     exports polling.server;
     exports Befragung;

@@ -21,4 +21,8 @@ public class FrageText extends Frage {
         return obj.toString();
 
     }
+    @Override
+    public String toString() {
+        return text;
+    }
 }

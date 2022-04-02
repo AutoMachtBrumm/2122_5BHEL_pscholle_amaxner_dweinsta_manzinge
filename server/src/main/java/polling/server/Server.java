@@ -1,6 +1,8 @@
 package polling.server;
 
 import Befragung.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,26 +15,16 @@ import java.util.Vector;
 
 public class Server extends Thread{
 
-    static final String url = "jdbc:postgresql://localhost:5432/pscholle";
-    static final String user = "reader";
-    static final String password = "reader";
+
 
     private ServerSocket serverSocket;
-    public Vector<Befragung> befragungen = new Vector<>();
+    public ObservableList<Befragung> befragungen = FXCollections.observableArrayList();
     private boolean frunning;
 
     public void run() {
         try {
             frunning = true;
-            DBConnector.connect(url, user, password);
 
-            for (Befragung befragung:
-                 befragungen) {
-                DBController.insertBefragung(befragung);
-            }
-
-            ConsoleReaderThread crt = new ConsoleReaderThread(this);
-            crt.start();
             while (frunning) {
                 serverSocket = new ServerSocket(10000);
                 Socket socket = serverSocket.accept();
@@ -42,10 +34,6 @@ public class Server extends Thread{
         } catch (SocketException e) {
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
     }
 
@@ -53,33 +41,9 @@ public class Server extends Thread{
         try {
             frunning = false;
             serverSocket.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
 
-class ConsoleReaderThread extends Thread {
-    Server server;
-
-    public ConsoleReaderThread(Server server) {
-        this.server = server;
-    }
-
-    @Override
-    public void run() {
-        try {
-            String input = null;
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            do {
-                input = br.readLine();
-                switch (input) {
-                    case "Exit":
-                        server.stopNow();
-                }
-            } while (!input.equals("Exit"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-}

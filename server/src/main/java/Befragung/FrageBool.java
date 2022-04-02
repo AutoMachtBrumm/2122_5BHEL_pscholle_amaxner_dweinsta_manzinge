@@ -1,5 +1,6 @@
 package Befragung;
 
+
 import org.json.JSONObject;
 
 public class FrageBool extends Frage {
@@ -20,5 +21,10 @@ public class FrageBool extends Frage {
 
         return obj.toString();
 
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 }

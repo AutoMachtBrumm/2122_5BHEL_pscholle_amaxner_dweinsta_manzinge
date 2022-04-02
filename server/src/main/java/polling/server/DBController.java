@@ -16,31 +16,34 @@ public class DBController {
         resultSet.next();
         befragung.setId(resultSet.getInt("id"));
         for (Frage frage: befragung.getFragen()) {
-            if(frage instanceof FrageText){
-                insertFrageText((FrageText) frage,befragung.getId());
-            }else if(frage instanceof FrageBool){
-                insertFrageBool((FrageBool) frage,befragung.getId());
-            }else if(frage instanceof FrageNum){
-                insertFrageNum((FrageNum) frage,befragung.getId());
-            }
+            insertFrage(frage,befragung.getId());
         }
-
     }
 
-    private static void insertFrageBool(FrageBool frageBool, int befragung_id) throws SQLException {
+    public static void insertFrage(Frage frage,int befID) throws SQLException {
+        if(frage instanceof FrageText){
+            insertFrageText((FrageText) frage,befID);
+        }else if(frage instanceof FrageBool){
+            insertFrageBool((FrageBool) frage,befID);
+        }else if(frage instanceof FrageNum){
+            insertFrageNum((FrageNum) frage,befID);
+        }
+    }
+
+    public static void insertFrageBool(FrageBool frageBool, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageBool.getNr() + ",'" + frageBool.getText() + "', 'bool', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageBool.setId(resultSet.getInt("id"));
     }
 
-    protected static void insertFrageText(FrageText frageText, int befragung_id) throws SQLException {
+    public static void insertFrageText(FrageText frageText, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageText.getNr() + ",'" + frageText.getText() + "', 'text', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageText.setId(resultSet.getInt("id"));
     }
 
 
-    protected static void insertFrageNum(FrageNum frageNum, int befragung_id) throws SQLException {
+    public static void insertFrageNum(FrageNum frageNum, int befragung_id) throws SQLException {
         ResultSet resultSet = runQuerryWR("insert into polling.frage(nr, text, type, befragung_id) values (" + frageNum.getNr() + ",'" + frageNum.getText() + "', 'nume', " + befragung_id + ") RETURNING id");
         resultSet.next();
         frageNum.setId(resultSet.getInt("id"));
@@ -60,16 +63,56 @@ public class DBController {
         runQuerryWOR("insert into polling.antwortnum(frage_id, antwort)  values (" + frage_id + ", " + antwort + ")");
     }
 
+    public static void deleteFrage(int frageID) throws SQLException {
+        runQuerryWOR("delete from polling.frage where id="+frageID);
+    }
+
+    public static void deleteBefragung(int befragungID) throws SQLException {
+        runQuerryWOR("delete from polling.befragung where id="+befragungID);
+    }
+
     public static List<Befragung> getBefragungen() throws SQLException {
         List<Befragung> befragungen = new ArrayList<>();
         ResultSet resultSet = runQuerryWR("SELECT * FROM polling.befragung");
         while(resultSet.next()){
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
-            befragungen.add(new Befragung(id, name));
+            Befragung bef=new Befragung(id, name);
+            bef.getFragen().addAll(getFragen(id));
+            befragungen.add(bef);
+
         }
         return befragungen;
     }
+
+    public static List<Frage> getFragen(int befragungID) throws SQLException {
+        List<Frage> fragen = new ArrayList<>();
+        ResultSet resultSet = runQuerryWR("SELECT * FROM polling.frage where befragung_id="+befragungID+" order by nr asc");
+        while(resultSet.next()){
+            String type = resultSet.getString("type");
+            int id=resultSet.getInt("id");
+            int nr=resultSet.getInt("nr");
+            int seconds=resultSet.getInt("seconds");
+            String text=resultSet.getString("text");
+            switch (type){
+                case "text":
+                    fragen.add(new FrageText(id,nr,seconds,text));
+                    break;
+                case "bool":
+                    fragen.add(new FrageBool(id,nr,seconds,text));
+                    break;
+                case "nume":
+                    ResultSet resultSetMinMax = runQuerryWR("SELECT * FROM polling.fragenum where frage_id="+id);
+                    resultSetMinMax.next();
+                    int min=resultSetMinMax.getInt("minval");
+                    int max=resultSetMinMax.getInt("maxval");
+                    fragen.add(new FrageNum(id,nr,seconds,text,min,max));
+                    break;
+            }
+        }
+        return fragen;
+    }
+
 
 
     /*

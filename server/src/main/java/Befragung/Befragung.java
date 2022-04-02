@@ -6,6 +6,7 @@ public class Befragung {
     private int id;
     private String name;
     private Vector<Frage> fragen= new Vector<>();
+    private boolean active=false;
 
     public Befragung(int id, String name) {
         this.id = id;
@@ -33,6 +34,30 @@ public class Befragung {
     }
 
     public void addFrage(Frage frage) {
-        this.fragen.add(frage);
+        if(!numAlreadyTaken(frage.nr)){
+            this.fragen.add(frage);
+        }
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean numAlreadyTaken(int nr){
+        for (Frage frg: fragen) {
+            if(frg.nr==nr){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

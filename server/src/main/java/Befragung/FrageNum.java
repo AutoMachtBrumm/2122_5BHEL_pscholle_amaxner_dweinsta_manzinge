@@ -41,4 +41,8 @@ public class FrageNum extends Frage{
         return obj.toString();
 
     }
+    @Override
+    public String toString() {
+        return text;
+    }
 }

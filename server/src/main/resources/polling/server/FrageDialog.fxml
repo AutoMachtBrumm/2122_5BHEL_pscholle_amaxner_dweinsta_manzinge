@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+        <children>
+            <Label text="Typ:" />
+      <VBox GridPane.columnIndex="1">
+         <children>
+             <RadioButton fx:id="textRadio" mnemonicParsing="false" selected="true" text="Text">
+               <toggleGroup>
+                  <ToggleGroup fx:id="radioBtns" />
+               </toggleGroup></RadioButton>
+             <RadioButton fx:id="boolRadio" mnemonicParsing="false" text="Ja / Nein" toggleGroup="$radioBtns" />
+             <RadioButton fx:id="numericRadio" mnemonicParsing="false" text="Numerisch" toggleGroup="$radioBtns" />
+
+         </children>
+      </VBox>
+            <Label prefHeight="14.0" prefWidth="33.0" text="Nr:" GridPane.rowIndex="1" />
+            <TextField fx:id="nrField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="18.0" prefWidth="75.0" text="Fragentext:" GridPane.rowIndex="2" />
+            <TextField fx:id="textField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label prefHeight="18.0" prefWidth="100.0" text="Zeit in Sekunden:" GridPane.rowIndex="3" />
+            <TextField fx:id="secField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="minFieldLab" prefHeight="18.0" prefWidth="100.0" text="Minimalwert:" visible="false" GridPane.rowIndex="4" />
+            <TextField fx:id="minField" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="maxFieldLab" prefHeight="18.0" prefWidth="100.0" text="Maximalwert:" visible="false" GridPane.rowIndex="5" />
+            <TextField fx:id="maxField" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+        </children>
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
+        </rowConstraints>
+</fx:root>

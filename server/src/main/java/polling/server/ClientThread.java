@@ -6,14 +6,15 @@ import Befragung.*;
 import java.io.*;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 
 public class ClientThread extends Thread {
     private Socket socket;
-    Vector<Befragung> befragungen;
+    List<Befragung> befragungen;
     Befragung befragung;
 
-    public ClientThread(Socket socket, Vector<Befragung> befragungen) {
+    public ClientThread(Socket socket, List<Befragung> befragungen) {
         this.socket = socket;
         this.befragungen = befragungen;
     }
@@ -26,24 +27,25 @@ public class ClientThread extends Thread {
             do {
                 String befname = reader.readLine();
 
-                for (Befragung bef :
-                        befragungen) {
+                for (Befragung bef : befragungen) {
                     if (bef.getName().equals(befname)) {
-                        befragung = bef;
-                        writer.write("ACCEPT\n");
-                        writer.flush();
-                        break;
-                    } else {
-                        writer.write("WRONG\n");
-                        writer.flush();
+                        if(bef.isActive()){
+                            befragung = bef;
+                            break;
+                        }else {
+                            writer.write("NOTACTIVE\n");
+                            writer.flush();
+                            break;
+                        }
                     }
                 }
                 if (befragung == null) {
-                    writer.write("Fragen.Befragung nicht gefunden\n");
+                    writer.write("WRONG\n");
                     writer.flush();
                 }
             } while (befragung == null);
-
+            writer.write("ACCEPT\n");
+            writer.flush();
 
             for (Frage frage:
                  befragung.getFragen()) {
@@ -58,7 +60,6 @@ public class ClientThread extends Thread {
                         rv=false;
                     else
                         rv=true;
-
                     DBController.insertAntwortBool(rv,frage.getId());
                 }else{
                     DBController.insertAntwortNum(Integer.parseInt(answer),frage.getId());
