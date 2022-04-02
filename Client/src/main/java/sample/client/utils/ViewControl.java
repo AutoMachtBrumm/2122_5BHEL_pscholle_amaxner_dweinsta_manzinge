@@ -17,13 +17,24 @@ public class ViewControl {
     private static JSONObject jObj = null;
 
     public static void nextScene(ActionEvent event, String json) {
-        if(!("ENDE".equals(json))){
+        if(!("ENDE".equals(json)) && json != null){
             ViewControl.setJSONObject(new JSONObject(json));
             // Change Scene
             ViewControl.changeScene(event);
         } else {
-            System.out.println("CLIENT SAYS GOOD BYE");
-            //TODO: Set Scene after finishing ...
+
+            try {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(MainClient.class.getResource("EndView.fxml"));
+                AnchorPane questionView = loader.load();
+
+                // Get Stage from ActionEvent
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(questionView, 750, 450));
+                stage.show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 

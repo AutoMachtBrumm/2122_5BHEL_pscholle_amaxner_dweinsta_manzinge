@@ -8,7 +8,7 @@ ANZINGER: Client & JavaFX
 
 WEINSTABEL: polling.server.Server
 
-SCHOLLER: Datenbank
+SCHOLLER: Datenbank, Auswertung
 
 MAXNER: Datenübersetzung (JSON to Java Object)
 

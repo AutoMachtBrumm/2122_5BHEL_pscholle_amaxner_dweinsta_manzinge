@@ -67,11 +67,6 @@ public class Client {
             inputLine = reader.readLine();
             System.out.println("Server: " + inputLine);
 
-            if ("ENDE".equals(inputLine)) {
-                // Close Connection to Server
-                closeServerConnection();
-                System.out.println("Close Client - Server Connection");
-            }
         } catch (IOException ex) {
             System.out.println("An error has occurred during data transmission: " + ex.getMessage());
         }

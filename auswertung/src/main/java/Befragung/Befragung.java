@@ -35,4 +35,9 @@ public class Befragung {
     public void addFrage(Frage frage) {
         this.fragen.add(frage);
     }
+
+    @Override
+    public String toString() {
+        return id + " | " +  name;
+    }
 }
