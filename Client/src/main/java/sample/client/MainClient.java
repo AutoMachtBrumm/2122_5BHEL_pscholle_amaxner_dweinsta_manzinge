@@ -13,7 +13,7 @@ public class MainClient extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("QUESTIONING");
+        primaryStage.setTitle("This is a Client - Application");
         primaryStage.initStyle(StageStyle.DECORATED);
 
         AnchorPane rootLayout = loadRootLayout();
