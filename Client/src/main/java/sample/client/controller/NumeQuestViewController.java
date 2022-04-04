@@ -1,14 +1,10 @@
 package sample.client.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import org.json.JSONObject;
 import sample.client.Client;
 import sample.client.utils.ViewControl;
 
@@ -17,8 +13,11 @@ import java.util.ResourceBundle;
 
 public class NumeQuestViewController implements Initializable {
 
+    @FXML
     public Label lbQuest;
+    @FXML
     public Label lbRating;
+    @FXML
     public Slider availableReproSelector;
 
     @Override
@@ -36,7 +35,6 @@ public class NumeQuestViewController implements Initializable {
 
     public void nextQuestion(ActionEvent actionEvent) {
         Client client = Client.client;
-
 
         int value = (int) Math.round(availableReproSelector.getValue());
 

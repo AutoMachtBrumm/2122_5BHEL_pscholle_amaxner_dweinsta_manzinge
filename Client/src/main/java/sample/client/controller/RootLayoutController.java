@@ -6,11 +6,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import sample.client.Client;
 import sample.client.utils.ViewControl;
-
-import java.io.IOException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ResourceBundle;
@@ -33,6 +32,12 @@ public class RootLayoutController implements Initializable {
             // Creates Client and Connect to Server
             client = Client.getClient();
             btnCon.setDisable(false);
+
+            // Server Connection get closed by Window close
+            Stage stage = (Stage) btnCon.getScene().getWindow();
+            stage.setOnCloseRequest(windowEvent -> {
+                Client.client.closeServerConnection();
+            });
         } catch (UnknownHostException ex) {
             System.out.println("UnknownHostException: " + ex.getMessage());
             lbERROR.setText("Cant Connect to Server. Please try again later");
@@ -50,10 +55,10 @@ public class RootLayoutController implements Initializable {
             ViewControl.setJSONObject(new JSONObject(json));
             // Change Scene
             ViewControl.nextScene(actionEvent, json);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             // Throws IOException if Authentication Key is wrong
-            System.out.println("I/O error: A-KEY might be wrong");
-            lbERROR.setText("A-KEY might be wrong");
+            System.out.println(ex.getMessage());
+            lbERROR.setText(ex.getMessage());
         }
     }
 }

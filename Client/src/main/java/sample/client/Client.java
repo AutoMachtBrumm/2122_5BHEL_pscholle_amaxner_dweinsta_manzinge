@@ -1,7 +1,5 @@
 package sample.client;
 
-import sample.client.utils.ViewControl;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -53,12 +51,16 @@ public class Client {
         }
     }
 
-    public void sendAuthenticationKey(String key) throws IOException {
+    public void sendAuthenticationKey(String key) throws Exception {
         sendDataToServer(key);
-        if (!("ACCEPT".equals(reader.readLine()))) {
-            throw new IOException();
+        if ("ACCEPT".equals(reader.readLine())) {
+            System.out.println("Server: ACCEPT");
+        } else if ("NOTACTIVE".equals(reader.readLine())){
+            System.out.println("Server: NOTACTIVE");
+            throw new Exception("This Questioning is not ACTIVE");
+        } else {
+            throw new Exception("A-Key might be wrong");
         }
-        System.out.println("Server: ACCEPT");
     }
 
     public String getDataFromServer() {
@@ -66,7 +68,6 @@ public class Client {
         try {
             inputLine = reader.readLine();
             System.out.println("Server: " + inputLine);
-
         } catch (IOException ex) {
             System.out.println("An error has occurred during data transmission: " + ex.getMessage());
         }

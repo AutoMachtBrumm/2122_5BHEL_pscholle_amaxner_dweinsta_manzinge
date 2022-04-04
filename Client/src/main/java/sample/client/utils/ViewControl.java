@@ -22,7 +22,6 @@ public class ViewControl {
             // Change Scene
             ViewControl.changeScene(event);
         } else {
-
             try {
                 FXMLLoader loader = new FXMLLoader();
                 loader.setLocation(MainClient.class.getResource("EndView.fxml"));

@@ -1,10 +1,10 @@
 package sample.client.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import org.json.JSONObject;
 import sample.client.Client;
 import sample.client.utils.ViewControl;
 
@@ -13,7 +13,9 @@ import java.util.ResourceBundle;
 
 public class TextQuestViewController implements Initializable {
 
+    @FXML
     public TextField tFAnswer;
+    @FXML
     public Label lbQuest;
 
     @Override
