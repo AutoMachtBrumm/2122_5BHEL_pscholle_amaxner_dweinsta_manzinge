@@ -13,14 +13,12 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FxController implements Initializable {
@@ -136,6 +134,10 @@ public class FxController implements Initializable {
 
             System.out.println(counts);
 
+            Label mittelwert = new Label( "Mittelwert = " + Statistics.mean(integerList));
+            Label standardabweichung = new Label("Standardabweichung = " + Statistics.sd( integerList));
+
+
             CategoryAxis xAxis = new CategoryAxis();
             NumberAxis yAxis = new NumberAxis();
             BarChart<String, Number> barChart = new BarChart<String, Number>(xAxis, yAxis);
@@ -150,7 +152,8 @@ public class FxController implements Initializable {
             xAxis.setLabel("Number");
             yAxis.setLabel("Amount of answers");
 
-            anchorPaneAuswertung.getChildren().add(barChart);
+            VBox vBox = new VBox(standardabweichung, mittelwert, barChart);
+            anchorPaneAuswertung.getChildren().add(vBox);
         } catch (SQLException e) {
             e.printStackTrace();
         }
